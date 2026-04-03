@@ -69,3 +69,31 @@ Return ONLY valid JSON with this exact schema:
             "action_items": [],
             "speakers": []
         }
+
+class AskRequest(BaseModel):
+    transcript: str
+    question: str
+
+@router.post("/ask")
+def ask_question(req: AskRequest):
+    try:
+        prompt = f"""You are a helpful legal AI assistant. Answer the user's question based strictly on the provided transcript.
+If the answer is not in the transcript, say so politely.
+
+Transcript:
+{req.transcript}
+
+Question:
+{req.question}
+"""
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=500,
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return {"answer": response.content[0].text.strip()}
+    except Exception as e:
+        print('Error:', e)
+        return {"answer": "Error processing request."}
