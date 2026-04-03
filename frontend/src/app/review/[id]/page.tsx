@@ -3,7 +3,40 @@ import React from 'react';
 import { ArrowLeft, CheckCircle, Clock, FileText, Download, Target, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 
+
 export default function ReviewDetailPage({ params }: { params: { id: string } }) {
+  const [data, setData] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Check if we have a demo transcript to analyze
+    const demoTranscript = localStorage.getItem('demo_transcript');
+    if (demoTranscript) {
+      setLoading(true);
+      fetch('http://localhost:8000/review/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transcript: demoTranscript })
+      })
+      .then(res => res.json())
+      .then(res => {
+         setData(res);
+         setLoading(false);
+      })
+      .catch(err => {
+         console.error(err);
+         setData({ summary: 'Failed to analyze.', action_items: [], speakers: [] });
+         setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const [loadingApprove, setLoadingApprove] = React.useState(false);
+  const router = require('next/navigation').useRouter();
+
+
   // In a real app we would load data per params.id
   return (
     <div className="flex h-screen bg-slate-50 flex-col">

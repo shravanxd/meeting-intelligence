@@ -8,6 +8,7 @@ export default function NewMeetingPage() {
   const [activeTab, setActiveTab] = useState<"join" | "upload" | "record" | "paste">("join");
   const [isCapturing, setIsCapturing] = useState(false);
   const [statusText, setStatusText] = useState("");
+  const [transcript, setTranscript] = useState("");
 
   const handleCapture = () => {
     setIsCapturing(true);
@@ -46,7 +47,7 @@ export default function NewMeetingPage() {
             {activeTab === "paste" && (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-slate-700 mb-1">Transcript Text or File (TXT, PDF, Word, MP3, MP4, etc.)</label>
-                <textarea className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm h-32" placeholder="Paste your meeting transcript here, or drag and drop a file..."></textarea>
+                <textarea className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm h-32" placeholder="Paste your meeting transcript here, or drag and drop a file..." value={transcript} onChange={(e) => setTranscript(e.target.value)}></textarea>
                 <div className="mt-2 text-xs text-slate-500">Alternatively, you can drag and drop supported files here.</div>
               </div>
             )}
@@ -63,7 +64,18 @@ export default function NewMeetingPage() {
               </select>
             </div>
             <div className="pt-4 flex justify-end">
-              <button onClick={handleCapture} className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-md shadow-sm text-sm transition-colors">Begin Capture</button>
+              <button 
+                onClick={() => {
+                  if (activeTab === "paste") {
+                    localStorage.setItem("demo_transcript", transcript);
+                  }
+                  handleCapture();
+                }} 
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-md shadow-sm text-sm transition-colors"
+                disabled={activeTab === "paste" && transcript.trim().length === 0}
+              >
+                {activeTab === "paste" ? "Analyze Transcript" : "Begin Capture"}
+              </button>
             </div>
           </div>
         ) : (
