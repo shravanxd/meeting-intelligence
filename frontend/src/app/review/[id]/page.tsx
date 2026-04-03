@@ -96,10 +96,10 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">Acme Contract Negotiation ({params.id})</h1>
+            <h1 className="text-xl font-semibold text-slate-900">{data?.title || `Acme Contract Negotiation (${params.id})`}</h1>
             <div className="flex items-center gap-3 text-sm mt-1">
-              <span className="flex items-center gap-1 text-slate-500"><Clock className="w-4 h-4" /> Today, 10:00 AM</span>
-              <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs font-medium">Needs Review</span>
+              <span className="flex items-center gap-1 text-slate-500"><Clock className="w-4 h-4" /> {data?.date || "Today, 10:00 AM"}</span>
+              <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs font-medium">{data?.status || "Needs Review"}</span>
             </div>
           </div>
         </div>

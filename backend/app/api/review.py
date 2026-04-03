@@ -36,6 +36,9 @@ Transcript:
 
 Return ONLY valid JSON with this exact schema:
 {{
+  "title": "Meeting Title (e.g. Acme Corp Merger Strategy)",
+  "date": "Meeting Date / Time (e.g. April 3, 2026, 10:00 AM)",
+  "status": "Needs Review or Approved",
   "summary": "Client reviewed the merger...",
   "action_items": [
      {{"task": "Revise section 4", "assignee": "John Doe"}}
