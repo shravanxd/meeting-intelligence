@@ -107,28 +107,40 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
               <h3 className="text-sm font-semibold text-slate-800 mb-2">Executive Summary</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Client reviewed the initial draft for the Acme Corp merger. Key disagreements centered around liability caps and timeline. Agreed to revise Section 4.
-              </p>
+              <p className="text-sm text-slate-600 leading-relaxed">{data?.summary || "Client reviewed the initial draft for the Acme Corp merger. Key disagreements centered around liability caps and timeline. Agreed to revise Section 4."}</p>
             </div>
 
             <div>
               <h3 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2"><CheckCircle className="w-4 h-4 text-emerald-600" /> Action Items</h3>
               <ul className="space-y-2">
-                <li className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
-                  <input type="checkbox" className="mt-1" />
-                  <div>
-                    <p className="text-sm font-medium text-slate-800">Revise liability cap in Section 4.</p>
-                    <p className="text-xs text-slate-500 mt-1">Assignee: John Doe</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
-                  <input type="checkbox" className="mt-1" />
-                  <div>
-                    <p className="text-sm font-medium text-slate-800">Send updated draft to opposing counsel.</p>
-                    <p className="text-xs text-slate-500 mt-1">Assignee: Jane Smith</p>
-                  </div>
-                </li>
+                {data?.action_items ? (
+                  data.action_items.map((item: any, idx: number) => (
+                    <li key={idx} className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
+                      <input type="checkbox" className="mt-1" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-800">{item.task}</p>
+                        <p className="text-xs text-slate-500 mt-1">Assignee: {item.assignee || 'Unassigned'}</p>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
+                      <input type="checkbox" className="mt-1" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-800">Revise liability cap in Section 4.</p>
+                        <p className="text-xs text-slate-500 mt-1">Assignee: John Doe</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
+                      <input type="checkbox" className="mt-1" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-800">Send updated draft to opposing counsel.</p>
+                        <p className="text-xs text-slate-500 mt-1">Assignee: Jane Smith</p>
+                      </div>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
