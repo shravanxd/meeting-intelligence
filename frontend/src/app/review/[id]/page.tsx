@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle, Clock, FileText, Download, Target, MessageSquar
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 
 export default function ReviewDetailPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<any>(null);
@@ -111,8 +112,9 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
       </header>
 
       <div className="flex-1 overflow-hidden flex">
+        <PanelGroup orientation="horizontal" id="review-layout">
         {/* Left Side - Extraction Panel */}
-        <div className="w-1/2 flex flex-col border-r border-slate-200 bg-white">
+        <Panel defaultSize={50} minSize={20} className="flex flex-col border-r border-slate-200 bg-white">
           <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center gap-2">
             <Target className="w-4 h-4 text-blue-600" />
             <span className="font-semibold text-slate-800 text-sm">Extracted Intelligence</span>
@@ -157,10 +159,16 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
               </ul>
             </div>
           </div>
-        </div>
+        </Panel>
+        
+        <PanelResizeHandle className="w-1 bg-slate-200 hover:bg-blue-400 transition-colors cursor-col-resize flex flex-col justify-center items-center group">
+           <div className="h-8 w-[2px] bg-slate-400 rounded-full group-hover:bg-white transition-colors"></div>
+        </PanelResizeHandle>
 
         {/* Right Side - Transcript & Context */}
-        <div className="w-1/2 flex flex-col bg-slate-50">
+        <Panel defaultSize={50} minSize={20} className="flex flex-col bg-slate-50">
+          <PanelGroup orientation="vertical" id="review-right-layout">
+             <Panel defaultSize={65} minSize={20} className="flex flex-col min-h-0">
           <div className="px-6 py-4 border-b border-slate-200 bg-white flex justify-between items-center">
              <div className="flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-blue-600" />
@@ -186,10 +194,14 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
                <p className="text-sm text-slate-500 italic">No transcript snippets parsed or snippet data is empty.</p>
              )}
           </div>
-          
+             </Panel>
+             <PanelResizeHandle className="h-1 bg-slate-200 hover:bg-blue-400 transition-colors cursor-row-resize flex justify-center items-center group shrink-0">
+                <div className="w-8 h-[2px] bg-slate-400 rounded-full group-hover:bg-white transition-colors"></div>
+             </PanelResizeHandle>
+             <Panel defaultSize={35} minSize={15} className="flex flex-col bg-white">
           {/* Ask AI Section */}
-          <div className="px-6 py-4 border-t border-slate-200 bg-white">
-            <div className="mb-3 space-y-3 max-h-32 overflow-y-auto">
+          <div className="px-6 py-4 flex flex-col h-full min-h-0">
+            <div className="flex-1 overflow-y-auto space-y-3 mb-3 pr-2 border border-transparent">
                {chatLog.map((log, i) => (
                  <div key={i} className="text-sm">
                     <div className="font-semibold text-blue-700">Q: {log.q}</div>
@@ -217,8 +229,10 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
               </button>
             </div>
           </div>
-
-        </div>
+             </Panel>
+          </PanelGroup>
+        </Panel>
+        </PanelGroup>
       </div>
     </div>
   );
