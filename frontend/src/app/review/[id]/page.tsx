@@ -169,12 +169,30 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
         <Panel defaultSize={50} minSize={20} className="flex flex-col bg-slate-50">
           <PanelGroup orientation="vertical" id="review-right-layout">
              <Panel defaultSize={65} minSize={20} className="flex flex-col min-h-0">
-          <div className="px-6 py-4 border-b border-slate-200 bg-white flex justify-between items-center">
-             <div className="flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-blue-600" />
-                <span className="font-semibold text-slate-800 text-sm">Transcript Evidence</span>
+          <div className="px-6 py-4 border-b border-slate-200 bg-white flex flex-col gap-3">
+             <div className="flex justify-between items-center">
+               <div className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-blue-600" />
+                  <span className="font-semibold text-slate-800 text-sm">Transcript</span>
+               </div>
+               <button className="text-slate-500 hover:text-slate-800 p-1"><Download className="w-4 h-4" /></button>
              </div>
-             <button className="text-slate-500 hover:text-slate-800 p-1"><Download className="w-4 h-4" /></button>
+             
+             {/* Mention People / Participants */}
+             {data?.speakers && data.speakers.length > 0 && (
+               <div className="flex flex-wrap gap-2">
+                 <span className="text-xs text-slate-500 flex items-center mr-1">In meeting:</span>
+                 {Array.from(new Set(data.speakers.map((s: any) => s.name).filter(Boolean))).map((name: any, idx) => (
+                   <button 
+                     key={idx} 
+                     onClick={() => setQuestion(prev => prev + (prev.endsWith(" ") || prev === "" ? "" : " ") + `@${name} `)}
+                     className="px-2 py-1 text-xs bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-md border border-slate-200 transition-colors flex items-center gap-1"
+                   >
+                     <span className="text-slate-400">@</span>{name}
+                   </button>
+                 ))}
+               </div>
+             )}
           </div>
                     <div className="flex-1 overflow-y-auto p-6 space-y-4">
              {data?.speakers && data.speakers.length > 0 ? (
