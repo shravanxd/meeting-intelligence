@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, CheckCircle, Clock, FileText, Download, Target, MessageSquare, Loader2, Send } from 'lucide-react';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function ReviewDetailPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<any>(null);
@@ -67,8 +69,19 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
     });
   };
 
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-slate-50 flex-col gap-4">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <p className="text-slate-600 font-medium">Analyzing Meeting Transcript & Extracting Intelligence...</p>
+      </div>
+    );
+  }
+
   const [loadingApprove, setLoadingApprove] = useState(false);
   const router = require('next/navigation').useRouter();
+
 
 
 
@@ -155,28 +168,23 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
              </div>
              <button className="text-slate-500 hover:text-slate-800 p-1"><Download className="w-4 h-4" /></button>
           </div>
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
-             {/* Mock Transcript */}
-             <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-700 font-bold text-xs mt-1">JD</div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm text-slate-900">John Doe</span>
-                    <span className="text-xs text-slate-400">00:15</span>
-                  </div>
-                  <p className="text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-200 shadow-sm">So regarding Section 4, the cap is currently at 5 million. We need it to be 10 million.</p>
-                </div>
-             </div>
-             <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 text-purple-700 font-bold text-xs mt-1">AC</div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm text-slate-900">Alice Counsel</span>
-                    <span className="text-xs text-slate-400">00:45</span>
-                  </div>
-                  <p className="text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-200 shadow-sm border-l-4 border-l-blue-500">I can present that to our board, but I'll need a revised draft showing those specific cap changes today. Also, let's make sure Jane sends it out to the opposing team.</p>
-                </div>
-             </div>
+                    <div className="flex-1 overflow-y-auto p-6 space-y-4">
+             {data?.speakers && data.speakers.length > 0 ? (
+               data.speakers.map((speaker: any, idx: number) => (
+                 <div key={idx} className="flex gap-4">
+                    <div className={`w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-700 font-bold text-xs mt-1`}>{speaker.initials || 'SP'}</div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-sm text-slate-900">{speaker.name || 'Speaker'}</span>
+                        <span className="text-xs text-slate-400">{speaker.time || '00:00'}</span>
+                      </div>
+                      <p className="text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-200 shadow-sm">{speaker.text}</p>
+                    </div>
+                 </div>
+               ))
+             ) : (
+               <p className="text-sm text-slate-500 italic">No transcript snippets parsed or snippet data is empty.</p>
+             )}
           </div>
           
           {/* Ask AI Section */}
@@ -185,7 +193,7 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
                {chatLog.map((log, i) => (
                  <div key={i} className="text-sm">
                     <div className="font-semibold text-blue-700">Q: {log.q}</div>
-                    <div className="text-slate-700 bg-slate-50 p-2 rounded border border-slate-100 mt-1">A: {log.a}</div>
+                    <div className="text-slate-700 bg-slate-50 p-3 rounded border border-slate-200 mt-1"><span className="font-bold mr-2">A:</span><div className="prose prose-sm max-w-none mt-1"><ReactMarkdown remarkPlugins={[remarkGfm]}>{log.a}</ReactMarkdown></div></div>
                  </div>
                ))}
                {chatting && <div className="text-sm text-slate-500 flex items-center gap-2"><Loader2 className="w-3 h-3 animate-spin"/> Thinking...</div>}
