@@ -70,6 +70,9 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
   };
 
 
+  const [loadingApprove, setLoadingApprove] = useState(false);
+  const router = require('next/navigation').useRouter();
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-slate-50 flex-col gap-4">
@@ -78,9 +81,6 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
       </div>
     );
   }
-
-  const [loadingApprove, setLoadingApprove] = useState(false);
-  const router = require('next/navigation').useRouter();
 
 
 
