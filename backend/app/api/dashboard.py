@@ -5,14 +5,14 @@ from ..models.models import Matter, Meeting
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("")
 def get_dashboard_stats(db: Session = Depends(get_db)):
     active_matters = db.query(Matter).count()
     meetings_processed = db.query(Meeting).count()
     pending_review = db.query(Meeting).filter(Meeting.status != "Approved").count()
     
     # Actually let's fetch specific pending meetings for the table
-    pending_meetings = db.query(Meeting).filter(Meeting.status != "Approved").order_with_labels().order_by(Meeting.created_at.desc()).limit(5).all()
+    pending_meetings = db.query(Meeting).filter(Meeting.status != "Approved").order_by(Meeting.created_at.desc()).limit(5).all()
     
     pending_list = []
     for m in pending_meetings:

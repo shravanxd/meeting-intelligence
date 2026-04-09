@@ -5,7 +5,7 @@ from ..models.models import AuditEvent
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("")
 def get_activity_log(db: Session = Depends(get_db)):
     events = db.query(AuditEvent).order_by(AuditEvent.timestamp.desc()).limit(50).all()
     out = []
