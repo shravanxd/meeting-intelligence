@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..core.dependencies import get_db
-from ..models.models import Meeting
+from ..models.models import Meeting, AuditEvent
 from ..services.recall_service import RecallService
 from pydantic import BaseModel
 import anthropic
@@ -121,6 +121,8 @@ def submit_review(meeting_id: str, db: Session = Depends(get_db)):
     meeting = db.query(Meeting).filter(Meeting.id == meeting_id).first()
     if meeting:
         meeting.status = "Approved"
+        audit = AuditEvent(event_type="REVIEW_APPROVED", entity_type="MEETING", entity_id=meeting.id, actor="AI Admin", metadata_json={"title": meeting.title})
+        db.add(audit)
         db.commit()
     return {"message": f"Review submitted for meeting {meeting_id}"}
 
@@ -128,6 +130,8 @@ def submit_review(meeting_id: str, db: Session = Depends(get_db)):
 def discard_review(meeting_id: str, db: Session = Depends(get_db)):
     meeting = db.query(Meeting).filter(Meeting.id == meeting_id).first()
     if meeting:
+        audit = AuditEvent(event_type="REVIEW_DISCARDED", entity_type="MEETING", entity_id=meeting.id, actor="AI Admin", metadata_json={"title": meeting.title})
+        db.add(audit)
         db.delete(meeting)
         db.commit()
     return {"message": f"Review discarded and meeting deleted"}

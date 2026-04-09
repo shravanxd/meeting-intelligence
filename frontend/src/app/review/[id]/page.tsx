@@ -204,9 +204,9 @@ export default function ReviewDetailPage({ params }: { params: Promise<{ id: str
                 {(data?.summary || data?.action_items) && (
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Follow Up Email:</span>
-                    <a href={outlookLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded text-xs font-medium transition-colors">
+                    <button onClick={() => window.open(outlookLink, '_blank')} className="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded text-xs font-medium transition-colors">
                       <Mail className="w-3 h-3" /> Outlook
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>
@@ -270,9 +270,9 @@ export default function ReviewDetailPage({ params }: { params: Promise<{ id: str
                                     </a>
                                 )}
                                 {isEmailing && (
-                                    <a href={`https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(guessedEmail)}&subject=${encodeURIComponent(calTitle)}&body=${encodeURIComponent(desc)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 rounded transition-colors">
+                                    <button onClick={() => window.open(`https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(guessedEmail)}&subject=${encodeURIComponent(calTitle)}&body=${encodeURIComponent(desc)}`, '_blank')} className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 rounded transition-colors">
                                         <Mail className="w-3.5 h-3.5" /> Send Email
-                                    </a>
+                                    </button>
                                 )}
                             </div>
                           </div>

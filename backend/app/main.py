@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
-from .api import matters, meetings, review, activity, health
+from .api import matters, meetings, review, activity, health, dashboard
 from .core.database import engine, Base
 from .models import models
 
@@ -29,3 +29,4 @@ app.include_router(matters.router, prefix="/matters", tags=["matters"])
 app.include_router(meetings.router, prefix="/meetings", tags=["meetings"])
 app.include_router(review.router, prefix="/review", tags=["review"])
 app.include_router(activity.router, prefix="/activity", tags=["activity"])
+app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])

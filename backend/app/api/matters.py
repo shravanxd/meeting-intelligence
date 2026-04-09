@@ -13,6 +13,18 @@ def create_matter(matter: schemas.MatterCreate, db: Session = Depends(get_db)):
     db.add(db_matter)
     db.commit()
     db.refresh(db_matter)
+    
+    # Audit log
+    audit_evt = models.AuditEvent(
+        event_type="MATTER_CREATED",
+        entity_type="MATTER",
+        entity_id=db_matter.id,
+        actor="AI Admin",
+        metadata_json={"title": db_matter.title, "client": db_matter.client_name}
+    )
+    db.add(audit_evt)
+    db.commit()
+
     return db_matter
 
 @router.get("/", response_model=List[schemas.MatterResponse])
