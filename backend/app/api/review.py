@@ -59,10 +59,56 @@ def get_meeting_review(meeting_id: str, db: Session = Depends(get_db)):
             print("Failed to read cache:", e)
 
     # Use anthropic to summarize
+    import re
+    speakers = []
+    lines = transcript.strip().split('\n')
+    current_speaker = "Unknown"
+    current_time = "00:00"
+    current_text = []
+
+    def flush():
+        if current_text:
+            text = " ".join(current_text).strip()
+            if text:
+                initials = "".join([w[0].upper() for w in current_speaker.split()[:2] if w.isalpha()])
+                if not initials: initials = current_speaker[:2].upper()
+                speakers.append({"initials": initials[:2], "name": current_speaker, "time": current_time, "text": text, "color": "blue"})
+            current_text.clear()
+
+    manual_pattern = re.compile(r'^(.+?)(?:\s+\[(?:(\d+)\s+min(?:ute)?s?)?\s*(?:(\d+)\s+sec(?:ond)?s?)?\])?:\s*$')
+    bot_pattern = re.compile(r'^\[(.+?)\]:\s*(.*)$')
+
+    for line in lines:
+        line = line.strip()
+        if not line: continue
+        if "stopped transcription" in line.lower() or "people in the meeting:" in line.lower(): continue
+
+        bot_match = bot_pattern.match(line)
+        if bot_match:
+            flush()
+            current_speaker = bot_match.group(1).strip()
+            current_text.append(bot_match.group(2).strip())
+            flush()
+            continue
+
+        m = manual_pattern.match(line)
+        if m:
+            flush()
+            current_speaker = m.group(1).strip()
+            mins = m.group(2)
+            secs = m.group(3)
+            current_time = "00:00"
+            if mins or secs:
+                m_val = int(mins) if mins else 0
+                s_val = int(secs) if secs else 0
+                current_time = f"{m_val:02d}:{s_val:02d}"
+            continue
+        
+        current_text.append(line)
+    flush()
     prompt = f"""You are a legal AI assistant. Examine the following transcript and extract:
 1. Executive Summary (2-3 sentences)
 2. Action Items (list 1-3 tasks and assignees)
-3. A full transcript properly mapped with speaker names. Infer names instead of [Unknown] based on context or introductions. Include the whole transcript chronologically.
 
 Meeting Title: {meeting.title}
 Transcript:
@@ -77,9 +123,7 @@ Return ONLY valid JSON with this exact schema:
   "action_items": [
      {{"task": "Revise section 4", "assignee": "John Doe"}}
   ],
-  "speakers": [
-     {{"initials": "JD", "name": "John Doe", "color": "blue", "time": "00:15", "text": "So regarding Section 4..."}}
-  ],
+,
   "transcript_text": "The full exact text from transcript"
 }}"""
     try:
@@ -96,6 +140,9 @@ Return ONLY valid JSON with this exact schema:
             text = text[start_idx:end_idx+1]
         
         parsed = json.loads(text)
+        parsed["speakers"] = speakers
+        parsed["speakers"] = speakers
+        parsed["speakers"] = speakers
         parsed["transcript_text"] = transcript # Override with full real text
         
         # Save to cache so subsequent views don't regenerate
@@ -158,10 +205,66 @@ def analyze_transcript(req: AnalyzeRequest):
                 "speakers": []
              }
 
+        import re
+        speakers = []
+        lines = req.transcript.strip().split('\n')
+        current_speaker = "Unknown"
+        current_time = "00:00"
+        current_text = []
+
+        def flush():
+            nonlocal current_speaker, current_time, current_text, speakers
+            if current_text:
+                text = " ".join(current_text).strip()
+                if text:
+                    initials = "".join([w[0].upper() for w in current_speaker.split()[:2] if w.isalpha()])
+                    if not initials: initials = current_speaker[:2].upper()
+                    speakers.append({
+                        "initials": initials[:2],
+                        "name": current_speaker,
+                        "time": current_time,
+                        "text": text,
+                        "color": "blue"
+                    })
+                current_text.clear()
+
+        # manual and bot transcript regex parsing pattern
+        manual_pattern = re.compile(r'^(.+?)(?:\s+\[(?:(\d+)\s+min(?:ute)?s?)?\s*(?:(\d+)\s+sec(?:ond)?s?)?\])?:\s*$')
+        bot_pattern = re.compile(r'^\[(.+?)\]:\s*(.*)$')
+
+        for line in lines:
+            line = line.strip()
+            if not line: continue
+            if "stopped transcription" in line.lower() or "people in the meeting:" in line.lower():
+                continue
+
+            bot_match = bot_pattern.match(line)
+            if bot_match:
+                flush()
+                current_speaker = bot_match.group(1).strip()
+                current_text.append(bot_match.group(2).strip())
+                flush()
+                continue
+
+            m = manual_pattern.match(line)
+            if m:
+                flush()
+                current_speaker = m.group(1).strip()
+                mins = m.group(2)
+                secs = m.group(3)
+                current_time = "00:00"
+                if mins or secs:
+                    m_val = int(mins) if mins else 0
+                    s_val = int(secs) if secs else 0
+                    current_time = f"{m_val:02d}:{s_val:02d}"
+                continue
+            
+            current_text.append(line)
+        flush()
+
         prompt = f"""You are a legal AI assistant. Examine the following transcript and extract:
 1. Executive Summary (2-3 sentences)
-2. Action Items (list as many tasks as discussed, max 6, and assignees. If scheduling a meeting or sending an email is discussed, ensure it is added to action_itemssed, max 6, and assignees. If scheduling a meeting or sending an email is discussed, ensure it is added to action_items)
-3. A full transcript properly mapped with speaker names. Infer names instead of [Unknown] based on context or introductions. Include the whole transcript chronologically.
+2. Action Items (list as many tasks as discussed, max 6, and assignees. If scheduling a meeting or sending an email is discussed, ensure it is added to action_items)
 
 Transcript:
 {req.transcript}
@@ -170,13 +273,10 @@ Return ONLY valid JSON with this exact schema:
 {{
   "title": "Meeting Title (e.g. Acme Corp Merger Strategy)",
   "date": "April 9 12:32 AM ET",
-  "status": "Needs Review or Approved",
+  "status": "Needs Review",
   "summary": "Client reviewed the merger...",
   "action_items": [
      {{"task": "Revise section 4", "assignee": "John Doe"}}
-  ],
-  "speakers": [
-     {{"initials": "JD", "name": "John Doe", "color": "blue", "time": "00:15", "text": "So regarding Section 4..."}}
   ]
 }}"""
         response = client.messages.create(
@@ -193,7 +293,11 @@ Return ONLY valid JSON with this exact schema:
         if start_idx != -1 and end_idx != -1:
             text = text[start_idx:end_idx+1]
         
-        return json.loads(text)
+        parsed = json.loads(text)
+        parsed["speakers"] = speakers
+        parsed["speakers"] = speakers
+        parsed["transcript_text"] = req.transcript
+        return parsed
     except Exception as e:
         print('Error:', e)
         return {

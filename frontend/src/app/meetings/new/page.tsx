@@ -127,10 +127,10 @@ export default function NewMeetingPage() {
       <div className="flex gap-2 mb-8 bg-slate-100 p-1 rounded-lg border border-slate-200 inline-block">
         <button onClick={() => setActiveTab("join")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "join" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><Video className="w-4 h-4" /> Join Live Meeting</button>
         <button onClick={() => setActiveTab("upload")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "upload" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><UploadCloud className="w-4 h-4" /> Upload Recording</button>
-        <button onClick={() => setActiveTab("record")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "record" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><Mic className="w-4 h-4" /> Record on Device</button>          <button onClick={() => setActiveTab("paste")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "paste" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><UploadCloud className="w-4 h-4" /> Paste Transcript / File</button>      </div>
+        <button onClick={() => setActiveTab("record")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "record" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><Mic className="w-4 h-4" /> Record on Device</button>          <button onClick={() => setActiveTab("paste")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "paste" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><UploadCloud className="w-4 h-4" /> Paste Transcript</button>      </div>
 
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm max-w-2xl p-6">
-        <h2 className="text-lg font-semibold text-slate-800">{activeTab === "join" ? "Join Live Meeting" : activeTab === "upload" ? "Upload Media" : activeTab === "paste" ? "Paste Transcript / File" : "In-Room Recording"}</h2>
+        <h2 className="text-lg font-semibold text-slate-800">{activeTab === "join" ? "Join Live Meeting" : activeTab === "upload" ? "Upload Media" : activeTab === "paste" ? "Paste Transcript" : "In-Room Recording"}</h2>
         
         {!isCapturing ? (
           <div className="space-y-4 mt-4">
@@ -173,9 +173,9 @@ export default function NewMeetingPage() {
             )}
             {activeTab === "paste" && (
               <div className="mb-4">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Transcript Text or File (TXT, PDF, Word, MP3, MP4, etc.)</label>
-                <textarea className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm h-32" placeholder="Paste your meeting transcript here, or drag and drop a file..." value={transcript} onChange={(e) => setTranscript(e.target.value)}></textarea>
-                <div className="mt-2 text-xs text-slate-500">Alternatively, you can drag and drop supported files here.</div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Paste Transcript Text</label>
+                <textarea className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm h-32" placeholder="Paste your meeting transcript here..." value={transcript} onChange={(e) => setTranscript(e.target.value)}></textarea>
+                
               </div>
             )}
             <div>
