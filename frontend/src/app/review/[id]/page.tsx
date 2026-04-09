@@ -1,12 +1,13 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, CheckCircle, Clock, FileText, Download, Target, MessageSquare, Loader2, Send } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, FileText, Download, Target, MessageSquare, Loader2, Send, Calendar, Mail } from 'lucide-react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 
-export default function ReviewDetailPage({ params }: { params: { id: string } }) {
+export default function ReviewDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const unwrappedParams = React.use(params);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [chatLog, setChatLog] = useState<{q: string, a: string}[]>([]);
@@ -14,29 +15,47 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
   const [chatting, setChatting] = useState(false);
 
   useEffect(() => {
-    // Check if we have a demo transcript to analyze
-    const demoTranscript = localStorage.getItem('demo_transcript');
-    if (demoTranscript) {
-      setLoading(true);
-      fetch('http://localhost:8000/review/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript: demoTranscript })
-      })
-      .then(res => res.json())
-      .then(res => {
-         setData(res);
-         setLoading(false);
-      })
-      .catch(err => {
-         console.error(err);
-         setData({ summary: 'Failed to analyze.', action_items: [], speakers: [] });
-         setLoading(false);
-      });
-    } else {
-      setLoading(false);
-    }
-  }, []);
+    // Attempt fetching the actual backend data by ID
+    const fetchMeeting = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const res = await fetch(`${apiUrl}/review/${unwrappedParams.id}`);
+        if (res.ok) {
+          const meetingData = await res.json();
+          setData(meetingData);
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.error("Backend fetch failed, falling back to local demo transcript", err);
+      }
+
+      // Check if we have a demo transcript to analyze (fallback)
+      const demoTranscript = localStorage.getItem('demo_transcript');
+      if (demoTranscript) {
+        setLoading(true);
+        fetch('http://localhost:8000/review/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: demoTranscript })
+        })
+        .then(res => res.json())
+        .then(res => {
+           setData(res);
+           setLoading(false);
+        })
+        .catch(err => {
+           console.error(err);
+           setData({ summary: 'Failed to analyze.', action_items: [], speakers: [] });
+           setLoading(false);
+        });
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchMeeting();
+  }, [unwrappedParams.id]);
 
   const handleAsk = () => {
     if (!question.trim()) return;
@@ -44,15 +63,16 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
     setQuestion("");
     setChatLog(prev => [...prev, { q, a: "" }]);
     setChatting(true);
-    const demoTranscript = localStorage.getItem('demo_transcript') || "No transcript found";
-    
+    const payload = {
+      transcript: data?.transcript_text || localStorage.getItem('demo_transcript') || "No transcript found",
+      summary: data?.summary || "",
+      action_items: JSON.stringify(data?.action_items || []),
+      question: q
+    };
     fetch('http://localhost:8000/review/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        transcript: demoTranscript,
-        question: q
-      })
+      body: JSON.stringify(payload)
     })
     .then(res => res.json())
     .then(res => {
@@ -60,6 +80,12 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
       setChatLog(prev => prev.map((item, idx) => 
         idx === prev.length - 1 ? { ...item, a: res.answer } : item
       ));
+      if (res.added_action_items && res.added_action_items.length > 0) {
+        setData((prev: any) => ({
+           ...prev,
+           action_items: [...(prev?.action_items || []), ...res.added_action_items]
+        }));
+      }
     })
     .catch(err => {
       console.error(err);
@@ -87,6 +113,38 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
 
 
 
+  const generateEmailData = () => {
+    if (!data) return { subject: "", body: "", to: "" };
+    
+    const cleanSummary = (data.summary || "")
+      .replace(/—/g, '-')
+      .replace(/\*/g, '')
+      .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '')
+      .trim();
+
+    const tasks = (data.action_items || []).map((item: {task: string, assignee?: string}) => `- ${item.task} (Assignee: ${item.assignee || 'Unassigned'})`).join('\n');
+    
+    const emailSubject = `Follow Up: ${data.title || "Meeting"}`.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+    
+    const emailBody = `Hi Team,\n\nHere is a brief summary of our discussion:\n${cleanSummary}\n\nAction Items:\n${tasks}\n\nBest regards,\nLegal Buddy`;
+
+    let members: string[] = [];
+    if (data.participants && Array.isArray(data.participants)) {
+      members = data.participants.map((p: string | {name?: string}) => {
+         const nameStr = typeof p === 'string' ? p : (p.name || '');
+         const name = nameStr.split(' ')[0].toLowerCase().replace(/[^a-z]/g, '');
+         return name && name !== 'unknown' ? `${name}@company.com` : '';
+      }).filter(Boolean);
+    }
+    
+    const to = Array.from(new Set(members)).join(',');
+    return { subject: emailSubject, body: emailBody, to };
+  };
+
+  const mailData = generateEmailData();
+  const outlookLink = `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(mailData.to)}&subject=${encodeURIComponent(mailData.subject)}&body=${encodeURIComponent(mailData.body)}`;
+
+
   // In a real app we would load data per params.id
   return (
     <div className="flex h-screen bg-slate-50 flex-col">
@@ -96,7 +154,7 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">{data?.title || `Acme Contract Negotiation (${params.id})`}</h1>
+            <h1 className="text-xl font-semibold text-slate-900">{data?.title || `Acme Contract Negotiation (${unwrappedParams.id})`}</h1>
             <div className="flex items-center gap-3 text-sm mt-1">
               <span className="flex items-center gap-1 text-slate-500"><Clock className="w-4 h-4" /> {data?.date || "Today, 10:00 AM"}</span>
               <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs font-medium">{data?.status || "Needs Review"}</span>
@@ -104,9 +162,29 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
           </div>
         </div>
         <div className="flex gap-3">
-          <button className="px-4 py-2 border border-slate-300 text-slate-700 bg-white rounded-md text-sm font-medium hover:bg-slate-50 transition-colors">Discard</button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
-            <CheckCircle className="w-4 h-4" /> Approve to Matter
+          {data?.status === "in_call" || data?.status === "joining_call" || data?.status === "in_waiting_room" ? (
+             <button 
+               onClick={async () => { 
+                await fetch(`http://localhost:8000/meetings/${unwrappedParams.id}/end`, { method: 'POST' }); 
+                window.location.reload(); 
+               }} 
+               className="px-4 py-2 border border-red-300 text-red-600 bg-white rounded-md text-sm font-medium hover:bg-red-50 transition-colors"
+             >
+               End Session
+             </button>
+          ) : null}
+          <button onClick={async () => { await fetch(`http://localhost:8000/review/${unwrappedParams.id}`, { method: 'DELETE' }); router.push('/meetings'); }} className="px-4 py-2 border border-slate-300 text-slate-700 bg-white rounded-md text-sm font-medium hover:bg-slate-50 transition-colors">Discard</button>
+          <button 
+            onClick={async () => { 
+                setLoadingApprove(true);
+                await fetch(`http://localhost:8000/review/${unwrappedParams.id}/review`, { method: 'PUT' }); 
+                setLoadingApprove(false);
+                router.push('/meetings'); 
+            }} 
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-50"
+            disabled={loadingApprove}
+          >
+            <CheckCircle className="w-4 h-4" /> {loadingApprove ? 'Approving...' : 'Approve to Matter'}
           </button>
         </div>
       </header>
@@ -121,23 +199,83 @@ export default function ReviewDetailPage({ params }: { params: { id: string } })
           </div>
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="text-sm font-semibold text-slate-800 mb-2">Executive Summary</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">{data?.summary || "Client reviewed the initial draft for the Acme Corp merger. Key disagreements centered around liability caps and timeline. Agreed to revise Section 4."}</p>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-slate-800">Executive Summary</h3>
+                {(data?.summary || data?.action_items) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Follow Up Email:</span>
+                    <a href={outlookLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded text-xs font-medium transition-colors">
+                      <Mail className="w-3 h-3" /> Outlook
+                    </a>
+                  </div>
+                )}
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">{data?.summary || "Meeting intelligence is being processed. Please wait..."}</p>
             </div>
 
             <div>
               <h3 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2"><CheckCircle className="w-4 h-4 text-emerald-600" /> Action Items</h3>
               <ul className="space-y-2">
                 {data?.action_items ? (
-                  data.action_items.map((item: any, idx: number) => (
-                    <li key={idx} className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
-                      <input type="checkbox" className="mt-1" />
-                      <div>
-                        <p className="text-sm font-medium text-slate-800">{item.task}</p>
-                        <p className="text-xs text-slate-500 mt-1">Assignee: {item.assignee || 'Unassigned'}</p>
-                      </div>
-                    </li>
-                  ))
+                  data.action_items.map((item: any, idx: number) => {
+                    const isScheduling = /meeting|schedule|call|deal|sync|prepare/i.test(item.task);                                                         
+                    const isEmailing = /email|reach out|contact|send|message/i.test(item.task);
+                    
+                    let startDate = new Date();
+                    const monthMatch = item.task.match(/(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\s+(\d{1,2})(?:st|nd|rd|th)?/i);
+                    const pmMatch = item.task.match(/(\d{1,2})(?::\d{2})?\s*(am|pm)/i);
+                    
+                    if (monthMatch) {
+                      const monthName = monthMatch[1].toLowerCase();
+                      const day = parseInt(monthMatch[2], 10);
+                      const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+                      const monthIndex = months.findIndex(m => monthName.startsWith(m));
+                      if (monthIndex !== -1) {
+                         startDate.setMonth(monthIndex);
+                         startDate.setDate(day);
+                         startDate.setHours(9, 0, 0, 0);
+                      }
+                    } else {
+                      startDate.setDate(startDate.getDate() + 1);
+                      startDate.setHours(9, 0, 0, 0); 
+                    }
+                    
+                    if (pmMatch) {
+                      let hr = parseInt(pmMatch[1], 10);
+                      if (pmMatch[2].toLowerCase() === 'pm' && hr !== 12) hr += 12;
+                      if (pmMatch[2].toLowerCase() === 'am' && hr === 12) hr = 0;
+                      startDate.setHours(hr, 0, 0, 0);
+                    }
+
+                    
+                    const guessedEmail = item.assignee ? `${item.assignee.split(' ')[0].toLowerCase()}@company.com` : '';
+                    
+                    const calTitle = `Legal Follow-up: ${data?.title || 'Client Matter'}`;
+                    const desc = `Agenda Topics & Context:\n${data?.summary || 'Follow-up discussion regarding recent case developments.'}\n\nTask Reference:\n- ${item.task}`;
+                    
+                    const calLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(calTitle)}&dates=${datesStr}&details=${encodeURIComponent(desc)}&add=${encodeURIComponent(guessedEmail)}&location=${encodeURIComponent('Google Meet')}`;
+                    return (
+                        <li key={idx} className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
+                          <input type="checkbox" className="mt-1" />
+                          <div>
+                            <p className="text-sm font-medium text-slate-800">{item.task}</p>
+                            <p className="text-xs text-slate-500 mt-1">Assignee: {item.assignee || 'Unassigned'}</p>
+                            <div className="flex gap-2 mt-2">
+                                {isScheduling && (
+                                    <a href={calLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 rounded transition-colors">
+                                        <Calendar className="w-3.5 h-3.5" /> Schedule Google Meet
+                                    </a>
+                                )}
+                                {isEmailing && (
+                                    <a href={`https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(guessedEmail)}&subject=${encodeURIComponent(calTitle)}&body=${encodeURIComponent(desc)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 rounded transition-colors">
+                                        <Mail className="w-3.5 h-3.5" /> Send Email
+                                    </a>
+                                )}
+                            </div>
+                          </div>
+                      </li>
+                    );
+                  })
                 ) : (
                   <>
                     <li className="flex items-start gap-3 bg-white p-3 border border-slate-200 rounded-lg shadow-sm">
