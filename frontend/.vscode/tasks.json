@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "npm dev",
+			"type": "shell",
+			"command": "cd /Users/shravan/Desktop/Meeting-Intelligence/frontend && npm run dev",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

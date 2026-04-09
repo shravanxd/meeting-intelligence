@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Video, UploadCloud, Mic, Loader2 } from "lucide-react";
+import { Video, UploadCloud, Mic, Loader2, Link as LinkIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function NewMeetingPage() {
@@ -40,10 +40,35 @@ export default function NewMeetingPage() {
         <button onClick={() => setActiveTab("record")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "record" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><Mic className="w-4 h-4" /> Record on Device</button>          <button onClick={() => setActiveTab("paste")} className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === "paste" ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-600"}`} disabled={isCapturing}><UploadCloud className="w-4 h-4" /> Paste Transcript / File</button>      </div>
 
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm max-w-2xl p-6">
-        <h2 className="text-lg font-semibold text-slate-800">{activeTab === "join" ? "Simulate Agent Join" : activeTab === "upload" ? "Upload Media" : activeTab === "paste" ? "Paste Transcript / File" : "In-Room Recording"}</h2>
+        <h2 className="text-lg font-semibold text-slate-800">{activeTab === "join" ? "Join Live Meeting" : activeTab === "upload" ? "Upload Media" : activeTab === "paste" ? "Paste Transcript / File" : "In-Room Recording"}</h2>
         
         {!isCapturing ? (
           <div className="space-y-4 mt-4">
+            {activeTab === "join" && (
+              <div className="mb-4 space-y-4">
+                <div className="flex gap-4 items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
+                  <div className="flex -space-x-2">
+                    {/* Simplified logos using initial or icons if svgs are missing */}
+                 <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center text-white font-bold text-xs"><Video className="w-4 h-4"/></div>
+                 <div className="w-8 h-8 rounded-full bg-indigo-600 border-2 border-white flex items-center justify-center text-white font-bold text-xs">T</div>
+                    <div className="w-8 h-8 rounded-full bg-green-500 border-2 border-white flex items-center justify-center text-white font-bold text-xs">M</div>
+                  </div>
+                  <div>
+                  <p className="text-sm font-medium text-slate-800">Support for Teams, Zoom, & Meet</p>
+                  <p className="text-xs text-slate-500">Paste your link to dispatch Novus AI Buddy to join.</p>
+                  </div>
+                </div>
+                <div>
+                   <label className="block text-sm font-medium text-slate-700 mb-1">Meeting Link</label>
+                   <div className="relative">
+                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                       <LinkIcon className="h-4 w-4 text-slate-400" />
+                   </div>
+                      <input type="url" className="w-full border border-slate-300 rounded-md pl-10 pr-3 py-2 text-sm" placeholder="https://meet.google.com/... or https://teams.microsoft.com/..." />
+                   </div>
+                </div>
+              </div>
+            )}
             {activeTab === "paste" && (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-slate-700 mb-1">Transcript Text or File (TXT, PDF, Word, MP3, MP4, etc.)</label>
@@ -74,7 +99,7 @@ export default function NewMeetingPage() {
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-md shadow-sm text-sm transition-colors"
                 disabled={activeTab === "paste" && transcript.trim().length === 0}
               >
-                {activeTab === "paste" ? "Analyze Transcript" : "Begin Capture"}
+                {activeTab === "paste" ? "Analyze Transcript" : activeTab === "join" ? "Dispatch Bot" : "Begin Capture"}
               </button>
             </div>
           </div>

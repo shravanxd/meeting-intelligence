@@ -2,6 +2,7 @@ from typing import Optional, List
 from sqlalchemy.orm import Session
 from ..models.models import Meeting, AuditEvent
 from ..schemas.schemas import MeetingCreate
+from .recall_service import RecallService
 
 class MeetingIngestionService:
     def __init__(self, db: Session):
@@ -29,10 +30,22 @@ class MeetingIngestionService:
             meeting_link=data.meeting_link
         )
         self.db.add(meeting)
+        self.db.flush()
+
+        if data.meeting_link:
+            recall_service = RecallService()
+            bot_response = recall_service.schedule_bot(data.meeting_link, bot_name=f"Meeting Intelligence - {data.title}")
+            if bot_response and hasattr(bot_response, "get"):
+                # You'd typically store this id: meeting.recall_bot_id = bot_response.get("id")
+                pass
+
         self.db.commit()
         self.db.refresh(meeting)
         
-        self._log_audit("meeting_joined", meeting.id, actor, {"link": meeting.meeting_link})
+        self._log_audit("meeting_joined", meeting.id, actor, {
+            "link": meeting.meeting_link,
+            "bot_scheduled": bool(data.meeting_link)
+        })
         return meeting
 
     def ingest_uploaded_meeting(self, matter_id: str, title: str, 
