@@ -38,14 +38,18 @@ Users can review meetings via the `Review Queue`. The review UI incorporates pow
   - Sub-processing/Transcription: Recall.ai + AWS Transcribe
   - Legal extraction, formatting, and chatbots: Anthropic (Claude 3.5 Haiku)
 
-## Running the Application
-**Backend:**
+## Daily Startup / Running the Application
+
+To start the application in the morning, you need two separate terminal windows.
+
+**Terminal 1 (Backend):**
 ```bash
 cd backend
 source venv/bin/activate
 uvicorn app.main:app --reload --port 8000
 ```
-**Frontend:**
+
+**Terminal 2 (Frontend):**
 ```bash
 cd frontend
 npm run dev
