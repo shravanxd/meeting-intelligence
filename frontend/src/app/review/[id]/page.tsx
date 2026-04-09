@@ -247,7 +247,10 @@ export default function ReviewDetailPage({ params }: { params: Promise<{ id: str
                       startDate.setHours(hr, 0, 0, 0);
                     }
 
-                    
+                    const endDate = new Date(startDate.getTime() + 45 * 60000);
+                    const fmtDate = (d: Date) => d.toISOString().replace(/-|:|\.\d+/g, '');
+                    const datesStr = `${fmtDate(startDate)}/${fmtDate(endDate)}`;
+
                     const guessedEmail = item.assignee ? `${item.assignee.split(' ')[0].toLowerCase()}@company.com` : '';
                     
                     const calTitle = `Legal Follow-up: ${data?.title || 'Client Matter'}`;
