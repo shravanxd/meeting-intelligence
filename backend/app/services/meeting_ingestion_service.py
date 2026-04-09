@@ -34,10 +34,17 @@ class MeetingIngestionService:
 
         if data.meeting_link:
             recall_service = RecallService()
-            bot_response = recall_service.schedule_bot(data.meeting_link, bot_name=f"Meeting Intelligence - {data.title}")
+            bot_response = recall_service.schedule_bot(data.meeting_link, bot_name=f"Novus AI Buddy - {data.title}")
+            
             if bot_response and hasattr(bot_response, "get"):
-                # You'd typically store this id: meeting.recall_bot_id = bot_response.get("id")
-                pass
+                bot_id = bot_response.get("id")
+                if bot_id:
+                    meeting.recall_bot_id = bot_id
+                    status_changes = bot_response.get("status_changes")
+                    if status_changes and len(status_changes) > 0:
+                        meeting.status = status_changes[-1].get("code", "scheduled")
+                    else:
+                        meeting.status = "scheduled"
 
         self.db.commit()
         self.db.refresh(meeting)

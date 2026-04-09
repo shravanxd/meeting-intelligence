@@ -1,0 +1,43 @@
+{
+  "title": "Novus AI <> Shawn",
+  "date": "Unknown",
+  "status": "Review Ready",
+  "summary": "Shravan and NeuraCamp Admin discussed progress on Neurontin in Europe and agreed to schedule a meeting for August 2016.",
+  "action_items": [
+    {
+      "task": "Schedule meeting for August 20, 2016",
+      "assignee": "NeuraCamp Admin"
+    }
+  ],
+  "speakers": [
+    {
+      "initials": "S",
+      "name": "Shravan",
+      "color": "blue",
+      "time": "00:00",
+      "text": "I thought my name fun uh today we are going to discuss about Neurontin."
+    },
+    {
+      "initials": "NA",
+      "name": "NeuraCamp Admin",
+      "color": "green",
+      "time": "00:15",
+      "text": "Hi, Charlotte, it's great to see you. How is the progress in Europe going?"
+    },
+    {
+      "initials": "S",
+      "name": "Shravan",
+      "color": "blue",
+      "time": "00:30",
+      "text": "Uh, it's going good. Can we schedule a meeting on August or 20 20016 for uh"
+    },
+    {
+      "initials": "NA",
+      "name": "NeuraCamp Admin",
+      "color": "green",
+      "time": "00:45",
+      "text": "Yeah, sure. We can do that."
+    }
+  ],
+  "transcript_text": "[Shravan]: I thought my name fun uh today we are going to discuss about Neurontin .\n[NeuraCamp Admin]: Hi , Charlotte , it's great to see you . How is the progress in Europe going ?\n[Shravan]: Uh , it's going good . Can we schedule a meeting on August or 20 20016 for uh\n[NeuraCamp Admin]: yeah , sure We can do that\n"
+}

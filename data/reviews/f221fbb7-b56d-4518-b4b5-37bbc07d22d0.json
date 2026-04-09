@@ -1,0 +1,268 @@
+{
+  "title": "Shravan <> Giselle",
+  "date": "Unknown",
+  "status": "Review Ready",
+  "summary": "Giselle discussed her ongoing research and paper publication timeline with Shravan (NeuraCamp Admin). She has two papers requiring submission by April 13th (11:59 PM) and April 27th (end of day), and they scheduled a progress review meeting for April 24th at 11:00 AM Eastern Time.",
+  "action_items": [
+    {
+      "task": "Review and provide feedback on research papers nearing publication",
+      "assignee": "Shravan"
+    },
+    {
+      "task": "Complete first paper submission",
+      "assignee": "Giselle Korn"
+    },
+    {
+      "task": "Complete second paper submission",
+      "assignee": "Giselle Korn"
+    }
+  ],
+  "speakers": [
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "00:00",
+      "text": "We"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "00:05",
+      "text": "have a friend now. Hi Giselle. How are you doing?"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "00:12",
+      "text": "I'm good. How are you? Nice to meet you."
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "00:18",
+      "text": "I'm just very busy with that deal."
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "00:25",
+      "text": "Yeah, of course, of course. I've been quite busy myself"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "00:32",
+      "text": "What are you busy with"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "00:38",
+      "text": "Um, well, I am working on a lot of research currently"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "00:45",
+      "text": ""
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "00:47",
+      "text": "Um yeah, it's been keeping me quite busy"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "00:54",
+      "text": "Do you need any of my help?"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "01:00",
+      "text": "Uh, yes, actually, um, so I just, I would definitely need your help, um, looking through the things I have to do. Um,"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "01:12",
+      "text": "I"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "01:13",
+      "text": "mean, I'm currently, there's several papers um that I'm working on. um that are getting pretty close to publication stages. Um, so I'm hoping to"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "01:28",
+      "text": "get"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "01:29",
+      "text": "the papers published"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "01:33",
+      "text": ""
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "01:34",
+      "text": "Um, well, one of the papers I have to have submitted by uh April twenty-seventh. um at the end of the day of April 27th, that has to be submitted by them"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "01:49",
+      "text": ""
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "01:50",
+      "text": "The other one is due April 13th"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "01:55",
+      "text": "um"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "01:56",
+      "text": "at midnight or 11:59 p.m."
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "02:02",
+      "text": "if you want, we can schedule a meeting somewhere around April 24th to go through the progress, and I can"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "02:12",
+      "text": "help you, um, April 24th at 11:00 a.m. work for"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "02:19",
+      "text": "you? Yeah, that works."
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "02:24",
+      "text": "And Eastern time?"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "02:28",
+      "text": "Yeah, Eastern time"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "02:31",
+      "text": "OK."
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "02:33",
+      "text": "Uh perfect"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "02:35",
+      "text": "Good. Thanks for your help."
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "02:40",
+      "text": "OK, I'll see you soon."
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "02:44",
+      "text": "OK, sounds good"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "02:48",
+      "text": "Yeah,"
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "02:50",
+      "text": "a good"
+    },
+    {
+      "initials": "SA",
+      "name": "Shravan (NeuraCamp Admin)",
+      "color": "green",
+      "time": "02:52",
+      "text": "one Bye."
+    },
+    {
+      "initials": "GK",
+      "name": "Giselle Korn",
+      "color": "blue",
+      "time": "02:54",
+      "text": "Bye"
+    }
+  ],
+  "transcript_text": "[Giselle Korn]: We\n[NeuraCamp Admin]: have a friend now . Hi Gisell . How are you doing ?\n[Giselle Korn]: I'm good . How are you ? Nice to meet you .\n[NeuraCamp Admin]: I'm just very busy with that deal .\n[Giselle Korn]: Yeah , of course , of course . I've been quite busy myself\n[NeuraCamp Admin]: . What are you busy with\n[Giselle Korn]: Um , well , I am working on a lot of research currently\n[NeuraCamp Admin]: .\n[Giselle Korn]: Um yeah , it's been keeping me quite busy\n[NeuraCamp Admin]: . Do you need any of my help ?\n[Giselle Korn]: Uh , yes , actually , um , so I just , I would definitely need your help , um , looking through the things I have to do . Um ,\n[NeuraCamp Admin]: I\n[Giselle Korn]: mean , I'm currently , there's several papers um that I'm working on . um that are getting pretty close to publication stages . Um , so I'm hoping to\n[NeuraCamp Admin]: get\n[Giselle Korn]: the papers published\n[NeuraCamp Admin]: .\n[Giselle Korn]: Um , well , one of the papers I have to have submitted by uh April twenty-seventh . um at the end of the day of April 27th , that has to be submitted by them\n[NeuraCamp Admin]: .\n[Giselle Korn]: The other one is due April 13th\n[NeuraCamp Admin]: , um\n[Giselle Korn]: , at midnight or 11:59 p.m.\n[NeuraCamp Admin]: if you want , we can . schedule a meeting somewhere around April 24th to go through the progress , and I can\n[Giselle Korn]: help you , um , April 24th at 11:00 a.m. work for\n[NeuraCamp Admin]: you ? Yeah , that works .\n[Giselle Korn]: And Eastern time ?\n[NeuraCamp Admin]: Yeah , Eastern time\n[Giselle Korn]: . OK .\n[NeuraCamp Admin]: Uh perfect\n[Giselle Korn]: . Good . Thanks for your help .\n[NeuraCamp Admin]: OK , I'll see you soon .\n[Giselle Korn]: OK , sounds good\n[NeuraCamp Admin]: Yeah ,\n[Giselle Korn]: a good\n[NeuraCamp Admin]: one Bye .\n[Giselle Korn]: Bye\n"
+}

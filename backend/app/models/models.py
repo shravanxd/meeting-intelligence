@@ -33,6 +33,7 @@ class Meeting(Base):
     consent_confirmed = Column(Boolean, default=False)
     participants = Column(JSON) # List of participant names/emails
     meeting_link = Column(String, nullable=True)
+    recall_bot_id = Column(String, nullable=True) # Track the Recall.ai bot
     
     started_at = Column(DateTime, nullable=True)
     ended_at = Column(DateTime, nullable=True)

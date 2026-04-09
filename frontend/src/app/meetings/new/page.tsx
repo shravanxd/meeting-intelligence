@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Video, UploadCloud, Mic, Loader2, Link as LinkIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -14,6 +14,7 @@ export default function NewMeetingPage() {
   const [meetingTitle, setMeetingTitle] = useState("Acme Contract Negotiation");
   const [matterId, setMatterId] = useState("2");
   const [errorMsg, setErrorMsg] = useState("");
+  const [participants, setParticipants] = useState<any[]>([]);
 
   const handleCapture = async () => {
     if (activeTab === "paste") {
@@ -43,9 +44,11 @@ export default function NewMeetingPage() {
           body: JSON.stringify({
             title: meetingTitle,
             meeting_link: meetingUrl,
-            matter_id: parseInt(matterId) || null,
+            matter_id: matterId || "default",
             consent_confirmed: true,
-            participants: []
+            participants: [],
+            ingestion_mode: "joined",
+            status: "scheduled"
           })
         });
 
@@ -55,13 +58,40 @@ export default function NewMeetingPage() {
 
         const data = await response.json();
         
-        setStatusText("Bot Dispatched! Waiting in lobby...");
-        setTimeout(() => {
-          setStatusText("Extracting intelligence stream...");
-        }, 3000);
-        setTimeout(() => {
-          router.push(data.id ? `/review/${data.id}` : "/review/1");
-        }, 6000);
+        setStatusText("Bot Dispatched! Waiting for lobby access...");
+        
+        const pollInterval = setInterval(async () => {
+          try {
+            const statusRes = await fetch(`${apiUrl}/meetings/${data.id}/status`);
+            if (statusRes.ok) {
+              const statusData = await statusRes.json();
+              console.log("Polled Status:", statusData);
+              const botState = statusData.bot_status;
+              
+              if (botState === "joining_call") setStatusText("Bot is joining the meeting...");
+              else if (botState === "in_waiting_room") setStatusText("Bot in Waiting Room...");
+              else if (botState === "in_call_not_recording") setStatusText("Bot joined, preparing to record...");
+              else if (botState === "in_call_recording") setStatusText("Bot in the Meeting & Recording...");
+              else if (botState === "call_ended" || botState === "recording_done" || botState === "done") {
+                setStatusText("Meeting ended! Preparing intelligence review...");
+                clearInterval(pollInterval);
+                setTimeout(() => router.push(`/review/${data.id}`), 2000);
+              } else if (botState === "fatal" || botState === "bot_refused") {
+                setErrorMsg("Bot failed to join or was rejected from the meeting.");
+                clearInterval(pollInterval);
+                setIsCapturing(false);
+              } else {
+                setStatusText(`Bot Status: ${botState || "Initializing..."}`);
+              }
+
+              if (statusData.participants && statusData.participants.length > 0) {
+                setParticipants(statusData.participants);
+              }
+            }
+          } catch (e) {
+            console.error("Polling error", e);
+          }
+        }, 2000);
 
       } catch (err) {
         console.error("Error dispatching bot:", err);
@@ -108,10 +138,15 @@ export default function NewMeetingPage() {
               <div className="mb-4 space-y-4">
                 <div className="flex gap-4 items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
                   <div className="flex -space-x-2">
-                    {/* Simplified logos using initial or icons if svgs are missing */}
-                 <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center text-white font-bold text-xs"><Video className="w-4 h-4"/></div>
-                 <div className="w-8 h-8 rounded-full bg-indigo-600 border-2 border-white flex items-center justify-center text-white font-bold text-xs">T</div>
-                    <div className="w-8 h-8 rounded-full bg-green-500 border-2 border-white flex items-center justify-center text-white font-bold text-xs">M</div>
+                    <div className="w-8 h-8 rounded-full bg-white border-2 border-white shadow-sm flex items-center justify-center overflow-hidden">
+                      <img src="/logos/Microsoft_Office_Teams_(2025–present).svg" alt="Teams" className="w-5 h-5 object-contain" />
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-white border-2 border-white shadow-sm flex items-center justify-center overflow-hidden">
+                      <img src="/logos/zoom-logo-41643.png" alt="Zoom" className="w-5 h-5 object-contain" />
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-white border-2 border-white shadow-sm flex items-center justify-center overflow-hidden">
+                      <img src="/logos/Google_Meet_Logo_512px.png" alt="Meet" className="w-5 h-5 object-contain" />
+                    </div>
                   </div>
                   <div>
                   <p className="text-sm font-medium text-slate-800">Support for Teams, Zoom, & Meet</p>
@@ -171,8 +206,22 @@ export default function NewMeetingPage() {
              <div className="text-center">
                <p className="text-sm font-medium text-slate-900">{statusText}</p>
                <p className="text-xs text-slate-500 mt-1">This typically takes a few seconds.</p>
-             </div>
-          </div>
+             </div>            
+            {participants.length > 0 && (
+              <div className="mt-6 w-full max-w-sm bg-white border border-slate-200 rounded-md p-4">
+                <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Live Participants ({participants.length})</h4>
+                <ul className="space-y-2 max-h-40 overflow-y-auto">
+                  {participants.map((p, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
+                      <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium text-xs">
+                        {p.name ? p.name.charAt(0).toUpperCase() : "?"}
+                      </div>
+                      <span className="truncate">{p.name || "Unknown"}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}          </div>
         )}
       </div>
     </div>

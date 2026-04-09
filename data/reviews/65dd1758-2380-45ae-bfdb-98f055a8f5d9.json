@@ -1,0 +1,33 @@
+{
+  "title": "Acme Contract Negotiation",
+  "date": "Unknown",
+  "status": "Review Ready",
+  "summary": "Shravan Khunti initiated discussion regarding the acquisition of Narca for $65 million and confirmed participant involvement in the deal. Jarvis confirmed his participation and expressed approval of the transaction terms.",
+  "action_items": [
+    {
+      "task": "Clarify deal structure and financial terms for Narca acquisition",
+      "assignee": "Shravan Khunti"
+    },
+    {
+      "task": "Confirm all deal participants and their roles",
+      "assignee": "Jarvis"
+    }
+  ],
+  "speakers": [
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "color": "blue",
+      "time": "00:00",
+      "text": "Hi everyone. My name is Shawan and today we are gonna discuss about Narca, which we are buying for $65 million. So who is in this deal. Are you in this deal? Um I think we should talk about this if you are in this student."
+    },
+    {
+      "initials": "JV",
+      "name": "Jarvis",
+      "color": "green",
+      "time": "00:45",
+      "text": "Uh yes, yeah, Mr. S. I am, I am in this 66 million sounds like a good idea. We can, can do this. Oh fuck I I Embarrassed."
+    }
+  ],
+  "transcript_text": "[Shravan Khunti]: Hi everyone . My name is Shawan and today we are gonna discuss about Narca , which we are buying for $65 million . So who is in this deal . Are you in this deal ? um I think we should talk about this if you are in this student .\n[Jarvis]: Uh yes , yeah , Mr . S . I am , I am in this 66 million sounds like a good idea . We can , can do this . Oh fuck I I Earrassed .\n"
+}
