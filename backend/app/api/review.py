@@ -33,7 +33,7 @@ def get_meeting_review(meeting_id: str, db: Session = Depends(get_db)):
     if not transcript.strip() or "No transcript" in transcript:
         return {
             "title": meeting.title,
-            "date": meeting.created_at.strftime("%B %d, %Y, %I:%M %p"),
+            "date": meeting.created_at.strftime("%B %d %I:%M %p ET").replace("09 ", "9 "),
             "status": "Awaiting Data",
             "summary": "No transcript available yet. If the meeting was just recorded, it may take a minute to process.",
             "action_items": [],
@@ -50,6 +50,8 @@ def get_meeting_review(meeting_id: str, db: Session = Depends(get_db)):
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
                 cached_data = json.load(f)
+                # Ensure the actual DB date correctly overrides any LLM hallucinations
+                cached_data["date"] = meeting.created_at.strftime("%B %d %I:%M %p ET").replace("09 ", "9 ")
                 # Keep real transcript up to date just in case
                 cached_data["transcript_text"] = transcript
                 return cached_data
@@ -69,7 +71,7 @@ Transcript:
 Return ONLY valid JSON with this exact schema:
 {{
   "title": "{meeting.title}",
-  "date": "{meeting.created_at.strftime("%B %d, %Y, %I:%M %p")}",
+  "date": "{meeting.created_at.strftime('%B %d %I:%M %p ET').replace('09 ', '9 ')}",
   "status": "Review Ready",
   "summary": "Client reviewed the merger...",
   "action_items": [
@@ -108,13 +110,23 @@ Return ONLY valid JSON with this exact schema:
         print('Error:', e)
         return {
             "title": meeting.title,
-            "date": meeting.created_at.strftime("%B %d, %Y, %I:%M %p"),
+            "date": meeting.created_at.strftime("%B %d %I:%M %p ET").replace("09 ", "9 "),
             "status": "Error",
             "summary": "Error processing transcript: " + str(e),
             "action_items": [],
             "speakers": [],
             "transcript_text": transcript
         }
+
+@router.put("/{meeting_id}/send-to-review")
+def send_to_review(meeting_id: str, db: Session = Depends(get_db)):
+    meeting = db.query(Meeting).filter(Meeting.id == meeting_id).first()
+    if meeting:
+        meeting.status = "Pending Review"
+        audit = AuditEvent(event_type="SENT_TO_REVIEW", entity_type="MEETING", entity_id=meeting.id, actor="AI Admin", metadata_json={"title": meeting.title})
+        db.add(audit)
+        db.commit()
+    return {"message": f"Sent meeting {meeting_id} to review"}
 
 @router.put("/{meeting_id}/review")
 def submit_review(meeting_id: str, db: Session = Depends(get_db)):
@@ -157,7 +169,7 @@ Transcript:
 Return ONLY valid JSON with this exact schema:
 {{
   "title": "Meeting Title (e.g. Acme Corp Merger Strategy)",
-  "date": "Meeting Date / Time (e.g. April 3, 2026, 10:00 AM)",
+  "date": "April 9 12:32 AM ET",
   "status": "Needs Review or Approved",
   "summary": "Client reviewed the merger...",
   "action_items": [

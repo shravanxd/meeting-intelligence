@@ -101,9 +101,9 @@ export default function MeetingsPage() {
               {isDeleteMode && <th className="py-3 px-4 w-12 text-center">Select</th>}
               <th className="py-3 px-4">Meeting Title</th>
               <th className="py-3 px-4">Date & Time</th>
-              <th className="py-3 px-4">Matter</th>
-              <th className="py-3 px-4">Status</th>
-              <th className="py-3 px-4 text-right">Actions</th>
+              <th className="py-3 px-4 w-40">Actions</th>
+              <th className="py-3 px-4 w-40">Matter</th>
+              <th className="py-3 px-4 w-40">Status</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
@@ -139,19 +139,19 @@ export default function MeetingsPage() {
                 <td className="py-3 px-4 text-slate-600">
                   <div className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5 text-slate-400" /> {m.date}</div>
                 </td>
-                <td className="py-3 px-4 text-slate-600">{m.matter !== 'None' ? m.matter : 'General'}</td>
                 <td className="py-3 px-4">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${m.status === 'Pending Review' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
-                    {m.status}
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-right">
-                  <div className="flex justify-end gap-3 items-center">
+                  <div className="flex justify-start gap-3 items-center">
                   <Link href={`/review/${m.id}`} className="text-blue-600 hover:text-blue-800 font-medium" onClick={(e) => { if(isDeleteMode) e.preventDefault(); }}>
                     {m.status === 'Pending Review' ? 'Review' : 'View'}
                   </Link>
                   {/* Remove inline individual delete button to match requested header bulk UX */}
                   </div>
+                </td>
+                <td className="py-3 px-4 text-slate-600">{m.matter !== 'None' ? m.matter : 'General'}</td>
+                <td className="py-3 px-4">
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${m.status === 'Pending Review' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                    {m.status}
+                  </span>
                 </td>
               </tr>
             ))}

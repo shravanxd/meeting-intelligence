@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { ArrowLeft, Clock, MapPin, Briefcase } from "lucide-react";
 import Link from "next/link";
 
-export default function MatterWorkspace({ params }: { params: { id: string } }) {
+export default function MatterWorkspace({ params }: { params: Promise<{ id: string }> }) {
+  const unwrappedParams = React.use(params);
+  const { id } = unwrappedParams;
   const [matter, setMatter] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/matters/${params.id}`)
+    fetch(`http://localhost:8000/matters/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Not found");
         return res.json();
@@ -21,7 +23,7 @@ export default function MatterWorkspace({ params }: { params: { id: string } }) 
         console.error(err);
         setLoading(false);
       });
-  }, [params.id]);
+  }, [id]);
 
   if (loading) {
     return <div className="p-8">Loading workspace...</div>;

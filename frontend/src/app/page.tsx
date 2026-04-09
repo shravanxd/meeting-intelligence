@@ -88,10 +88,10 @@ export default function Home() {
                 <h4 className="font-medium text-slate-900 group-hover:text-blue-700 text-sm">Log New Meeting</h4>
                 <p className="text-xs text-slate-500 mt-0.5">Join, upload, or start a recording</p>
                </a>
-               <button className="block w-full text-left px-4 py-3 rounded-md bg-slate-50 border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition group">
+               <a href="/matters/new" className="block w-full text-left px-4 py-3 rounded-md bg-slate-50 border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition group">
                 <h4 className="font-medium text-slate-900 group-hover:text-blue-700 text-sm">Create Matter</h4>
                 <p className="text-xs text-slate-500 mt-0.5">Initialize a new client workspace</p>
-               </button>
+               </a>
             </div>
           </div>
         </section>

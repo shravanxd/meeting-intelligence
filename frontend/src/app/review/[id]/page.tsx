@@ -98,6 +98,7 @@ export default function ReviewDetailPage({ params }: { params: Promise<{ id: str
 
 
   const [loadingApprove, setLoadingApprove] = useState(false);
+  const [loadingSendReview, setLoadingSendReview] = useState(false);
   const router = require('next/navigation').useRouter();
 
   if (loading) {
@@ -173,6 +174,18 @@ export default function ReviewDetailPage({ params }: { params: Promise<{ id: str
                End Session
              </button>
           ) : null}
+          <button 
+            onClick={async () => {
+              setLoadingSendReview(true);
+              await fetch(`http://localhost:8000/review/${unwrappedParams.id}/send-to-review`, { method: 'PUT' });
+              setLoadingSendReview(false);
+              router.push('/meetings');
+            }}
+            className="px-4 py-2 border border-slate-300 text-slate-700 bg-white rounded-md text-sm font-medium hover:bg-slate-50 transition-colors disabled:opacity-50"
+            disabled={loadingSendReview}
+          >
+            {loadingSendReview ? 'Sending...' : 'Send to Review'}
+          </button>
           <button onClick={async () => { await fetch(`http://localhost:8000/review/${unwrappedParams.id}`, { method: 'DELETE' }); router.push('/meetings'); }} className="px-4 py-2 border border-slate-300 text-slate-700 bg-white rounded-md text-sm font-medium hover:bg-slate-50 transition-colors">Discard</button>
           <button 
             onClick={async () => { 
