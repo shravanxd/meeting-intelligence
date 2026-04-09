@@ -9,8 +9,68 @@ export default function NewMeetingPage() {
   const [isCapturing, setIsCapturing] = useState(false);
   const [statusText, setStatusText] = useState("");
   const [transcript, setTranscript] = useState("");
+  
+  const [meetingUrl, setMeetingUrl] = useState("");
+  const [meetingTitle, setMeetingTitle] = useState("Acme Contract Negotiation");
+  const [matterId, setMatterId] = useState("2");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleCapture = () => {
+  const handleCapture = async () => {
+    if (activeTab === "paste") {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("demo_transcript", transcript);
+      }
+      setIsCapturing(true);
+      setStatusText("Analyzing transcript...");
+      setTimeout(() => router.push("/review/1"), 2000);
+      return;
+    }
+
+    if (activeTab === "join") {
+      if (!meetingUrl.trim()) {
+        setErrorMsg("Please enter a meeting link.");
+        return;
+      }
+      setErrorMsg("");
+      setIsCapturing(true);
+      setStatusText("Dispatching Novus AI Buddy to meeting...");
+
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const response = await fetch(`${apiUrl}/meetings/join`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: meetingTitle,
+            meeting_link: meetingUrl,
+            matter_id: parseInt(matterId) || null,
+            consent_confirmed: true,
+            participants: []
+          })
+        });
+
+        if (!response.ok) {
+           throw new Error("API returned failure");
+        }
+
+        const data = await response.json();
+        
+        setStatusText("Bot Dispatched! Waiting in lobby...");
+        setTimeout(() => {
+          setStatusText("Extracting intelligence stream...");
+        }, 3000);
+        setTimeout(() => {
+          router.push(data.id ? `/review/${data.id}` : "/review/1");
+        }, 6000);
+
+      } catch (err) {
+        console.error("Error dispatching bot:", err);
+        setErrorMsg("Failed to reach API. Make sure the backend server is running.");
+        setIsCapturing(false);
+      }
+      return;
+    }
+
     setIsCapturing(true);
     setStatusText("Connecting to meeting agent...");
     
@@ -64,8 +124,15 @@ export default function NewMeetingPage() {
                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                        <LinkIcon className="h-4 w-4 text-slate-400" />
                    </div>
-                      <input type="url" className="w-full border border-slate-300 rounded-md pl-10 pr-3 py-2 text-sm" placeholder="https://meet.google.com/... or https://teams.microsoft.com/..." />
+                      <input 
+                        type="url" 
+                        value={meetingUrl}
+                        onChange={(e) => setMeetingUrl(e.target.value)}
+                        className="w-full border border-slate-300 rounded-md pl-10 pr-3 py-2 text-sm" 
+                        placeholder="https://meet.google.com/... or https://teams.microsoft.com/..." 
+                      />
                    </div>
+                   {errorMsg && <p className="text-red-500 mt-1 text-xs">{errorMsg}</p>}
                 </div>
               </div>
             )}
@@ -78,11 +145,11 @@ export default function NewMeetingPage() {
             )}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Meeting Title</label>
-              <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm" placeholder="e.g. Acme Corp Contract Review" defaultValue="Acme Contract Negotiation" />
+              <input type="text" className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm" placeholder="e.g. Acme Corp Contract Review" value={meetingTitle} onChange={(e) => setMeetingTitle(e.target.value)} />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Link to Matter (Optional)</label>
-              <select className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm text-slate-700 bg-white" defaultValue="2">
+              <select className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm text-slate-700 bg-white" value={matterId} onChange={(e) => setMatterId(e.target.value)}>
                   <option value="">Select a matter...</option>
                   <option value="1">Smith v. Jones</option>
                   <option value="2">Acme Corp Merger</option>
@@ -90,14 +157,9 @@ export default function NewMeetingPage() {
             </div>
             <div className="pt-4 flex justify-end">
               <button 
-                onClick={() => {
-                  if (activeTab === "paste") {
-                    localStorage.setItem("demo_transcript", transcript);
-                  }
-                  handleCapture();
-                }} 
+                onClick={handleCapture}
+                disabled={isCapturing || (activeTab === "paste" && transcript.trim().length === 0)}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-md shadow-sm text-sm transition-colors"
-                disabled={activeTab === "paste" && transcript.trim().length === 0}
               >
                 {activeTab === "paste" ? "Analyze Transcript" : activeTab === "join" ? "Dispatch Bot" : "Begin Capture"}
               </button>
