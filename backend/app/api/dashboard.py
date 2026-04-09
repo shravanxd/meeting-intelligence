@@ -14,6 +14,8 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
     # Actually let's fetch specific pending meetings for the table
     pending_meetings = db.query(Meeting).filter(Meeting.status != "Approved").order_by(Meeting.created_at.desc()).limit(5).all()
     
+    tasks_generated = 0
+    
     pending_list = []
     for m in pending_meetings:
         matter_title = m.matter.title if m.matter else "Unassigned Matter"
@@ -29,5 +31,6 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
         "active_matters": active_matters,
         "meetings_processed": meetings_processed,
         "pending_review": pending_review,
+        "tasks_generated": tasks_generated,
         "recent_pending": pending_list
     }

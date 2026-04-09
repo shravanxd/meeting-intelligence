@@ -5,6 +5,7 @@ export default function Home() {
     active_matters: 0,
     meetings_processed: 0,
     pending_review: 0,
+    tasks_generated: 0,
     recent_pending: []
   });
 
@@ -26,10 +27,10 @@ export default function Home() {
       {/* Highlights */}
       <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Active Matters", value: "2" },
-          { label: "Meetings Processed", value: "14" },
-          { label: "Pending Review", value: "1", color: "text-amber-600" },
-          { label: "Tasks Generated", value: "32" },
+          { label: "Active Matters", value: stats.active_matters },
+          { label: "Meetings Processed", value: stats.meetings_processed },
+          { label: "Pending Review", value: stats.pending_review, color: "text-amber-600" },
+          { label: "Tasks Generated", value: stats.tasks_generated },
         ].map((stat, i) => (
           <div key={i} className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm">
             <h3 className="text-sm font-medium text-slate-500 mb-1">{stat.label}</h3>
