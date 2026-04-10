@@ -1,0 +1,93 @@
+{
+  "title": "Shravan <> Darshan",
+  "date": "Unknown",
+  "status": "In Progress",
+  "summary": "Darshan is preparing a presentation for April 15th but needs financing numbers to complete it. There are issues with channel numbers that require verification with AJ before proceeding. A 15-minute follow-up meeting is tentatively scheduled for April 17th at 10:00 a.m. to discuss any outstanding items.",
+  "action_items": [
+    {
+      "task": "Obtain financing numbers for presentation",
+      "assignee": "Darshan Upadhyay"
+    },
+    {
+      "task": "Double-check channel number issues with AJ",
+      "assignee": "Darshan Upadhyay"
+    },
+    {
+      "task": "Schedule 15-minute follow-up meeting",
+      "assignee": "Shravan"
+    }
+  ],
+  "transcript_text": "[Shravan]: Hadarshan , how is your presentation for April 15th going on .\n[Darshan Upadhyay]: It's going good . I , I'm , I'm , I'm stuck a couple of places . I don't know what exactly is happening , but I think once I get uh the number from financing , I think I'll be good to go .\n[Shravan]: What kind of numbers are we expecting this quarter\n[Darshan Upadhyay]: ? Uh , I think I'm good on the rest of things . I think RN card number looks good to me , but there's some issue with the channel number . So guideline just texted me about a couple of things , but I , I just want to double check with AJ and I can , I can get back to you . OK , sounds\n[Shravan]: good . You can double check it and do you wanna set up a follow-up meeting .\n[Darshan Upadhyay]: Uh , we , we can take it I think . I don't think we para me for it . Yeah .\n[Shravan]: But yeah , just to be synced , well , what do you think about April 17th , 100 a.m. for a follow-up\n[Darshan Upadhyay]: . Uh I think , uh , we can , we can keep a 15 minute placeholder , but I'm , I'm really considering my time , so I think it would be better to uh , take it , I think , but yeah , we can keep a 15 minute uh placeholder to just , uh , discuss how if anything comes up .\n[Shravan]: OK , sounds good then . See you soon .\n[Darshan Upadhyay]: Bye-bye . See you . Have a good weekend . Take care .\n",
+  "speakers": [
+    {
+      "initials": "S",
+      "name": "Shravan",
+      "time": "00:00",
+      "text": "Hadarshan , how is your presentation for April 15th going on .",
+      "color": "blue"
+    },
+    {
+      "initials": "DU",
+      "name": "Darshan Upadhyay",
+      "time": "00:00",
+      "text": "It's going good . I , I'm , I'm , I'm stuck a couple of places . I don't know what exactly is happening , but I think once I get uh the number from financing , I think I'll be good to go .",
+      "color": "blue"
+    },
+    {
+      "initials": "S",
+      "name": "Shravan",
+      "time": "00:00",
+      "text": "What kind of numbers are we expecting this quarter",
+      "color": "blue"
+    },
+    {
+      "initials": "DU",
+      "name": "Darshan Upadhyay",
+      "time": "00:00",
+      "text": "? Uh , I think I'm good on the rest of things . I think RN card number looks good to me , but there's some issue with the channel number . So guideline just texted me about a couple of things , but I , I just want to double check with AJ and I can , I can get back to you . OK , sounds",
+      "color": "blue"
+    },
+    {
+      "initials": "S",
+      "name": "Shravan",
+      "time": "00:00",
+      "text": "good . You can double check it and do you wanna set up a follow-up meeting .",
+      "color": "blue"
+    },
+    {
+      "initials": "DU",
+      "name": "Darshan Upadhyay",
+      "time": "00:00",
+      "text": "Uh , we , we can take it I think . I don't think we para me for it . Yeah .",
+      "color": "blue"
+    },
+    {
+      "initials": "S",
+      "name": "Shravan",
+      "time": "00:00",
+      "text": "But yeah , just to be synced , well , what do you think about April 17th , 100 a.m. for a follow-up",
+      "color": "blue"
+    },
+    {
+      "initials": "DU",
+      "name": "Darshan Upadhyay",
+      "time": "00:00",
+      "text": ". Uh I think , uh , we can , we can keep a 15 minute placeholder , but I'm , I'm really considering my time , so I think it would be better to uh , take it , I think , but yeah , we can keep a 15 minute uh placeholder to just , uh , discuss how if anything comes up .",
+      "color": "blue"
+    },
+    {
+      "initials": "S",
+      "name": "Shravan",
+      "time": "00:00",
+      "text": "OK , sounds good then . See you soon .",
+      "color": "blue"
+    },
+    {
+      "initials": "DU",
+      "name": "Darshan Upadhyay",
+      "time": "00:00",
+      "text": "Bye-bye . See you . Have a good weekend . Take care .",
+      "color": "blue"
+    }
+  ]
+}

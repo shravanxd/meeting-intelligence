@@ -1,0 +1,107 @@
+{
+  "title": "Legall Buddy Demo",
+  "date": "Unknown",
+  "status": "In Progress",
+  "summary": "Shravan Khunti demonstrated Legal Buddy, a centralized, in-house meeting transcription and summarization system designed without third-party dependencies for Sean's organization. The team discussed a locally-hosted solution with potential cloud deployment on virtual machines and scheduled follow-up meetings to advance the Phase One POC.",
+  "action_items": [
+    {
+      "task": "Schedule follow-up meeting to discuss contractual date for end of month Phase One POC",
+      "assignee": "Shravan Khunti"
+    },
+    {
+      "task": "Conduct second technical team meeting",
+      "assignee": "Callum Niven"
+    },
+    {
+      "task": "Remove bot from meeting",
+      "assignee": "Tashfin Shafique"
+    }
+  ],
+  "transcript_text": "[Callum Niven]: You know , summarize that , etc .\n[Shravan Khunti]: Uh , you can get uh transcripts from teams , but this is more like a centralized system , and Sean specifically mentioned that they want to build a system which is in-house , which doesn't depend on any third party services or anything . So this is like a completely , you can see the link . It's a locally hosted . It's hosted on my PC . They can post on their cloud , on their virtual machines . So it's like a complete internal system without any third party dependence Yes , but for this demo I am of course using uh AWS uh transcript services , but for Sean we can have an in-house transcript , uh , uh , tool . So that's why I think this is like a good approach for him . So yeah , I pasted the link uh of the meeting and a board was dispatched to this meeting , and you can see this spot has automatically joined our meeting . It's no SAI buddy , and you can see it's a legal party demo . It's I can name anything I want here . So , yeah , based on the discussions we do , it is now recording everything live .\n[Callum Niven]: Oh\n[Tashfin Shafique: Novusai]: Yep ,\n[Shravan Khunti]: yeah ,\n[Tashfin Shafique: Novusai]: uh yeah dashboard , you're sharing your , you're sharing your chat screen . Yeah , uh ,\n[Shravan Khunti]: can we speak something about dates so that I can show you how it's working like ,\n[Tashfin Shafique: Novusai]: OK , um , yeah , so we're trying to secure a um contractual date for end of the month for phase one , POC\n[Shravan Khunti]: Yeah , that sounds great . We can schedule a date on April 15th to have a follow-up meeting about it .\n[Tashfin Shafique: Novusai]: Sounds good . Yeah . And maybe , yeah , finish , yeah , go on .\n[Callum Niven]: OK , we , we , we could probably have a second meeting with the technical team the week after , um , maybe on the 21st .\n[Shravan Khunti]: Yeah , sounds good Now Tasha Fitzok , can you remove the bar ? Can you kick it out .\n",
+  "speakers": [
+    {
+      "initials": "CN",
+      "name": "Callum Niven",
+      "time": "00:00",
+      "text": "You know , summarize that , etc .",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "Uh , you can get uh transcripts from teams , but this is more like a centralized system , and Sean specifically mentioned that they want to build a system which is in-house , which doesn't depend on any third party services or anything . So this is like a completely , you can see the link . It's a locally hosted . It's hosted on my PC . They can post on their cloud , on their virtual machines . So it's like a complete internal system without any third party dependence Yes , but for this demo I am of course using uh AWS uh transcript services , but for Sean we can have an in-house transcript , uh , uh , tool . So that's why I think this is like a good approach for him . So yeah , I pasted the link uh of the meeting and a board was dispatched to this meeting , and you can see this spot has automatically joined our meeting . It's no SAI buddy , and you can see it's a legal party demo . It's I can name anything I want here . So , yeah , based on the discussions we do , it is now recording everything live .",
+      "color": "blue"
+    },
+    {
+      "initials": "CN",
+      "name": "Callum Niven",
+      "time": "00:00",
+      "text": "Oh",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "Yep ,",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "yeah ,",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "uh yeah dashboard , you're sharing your , you're sharing your chat screen . Yeah , uh ,",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "can we speak something about dates so that I can show you how it's working like ,",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "OK , um , yeah , so we're trying to secure a um contractual date for end of the month for phase one , POC",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "Yeah , that sounds great . We can schedule a date on April 15th to have a follow-up meeting about it .",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "Sounds good . Yeah . And maybe , yeah , finish , yeah , go on .",
+      "color": "blue"
+    },
+    {
+      "initials": "CN",
+      "name": "Callum Niven",
+      "time": "00:00",
+      "text": "OK , we , we , we could probably have a second meeting with the technical team the week after , um , maybe on the 21st .",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "Yeah , sounds good Now Tasha Fitzok , can you remove the bar ? Can you kick it out .",
+      "color": "blue"
+    }
+  ]
+}

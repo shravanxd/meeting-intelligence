@@ -1,0 +1,128 @@
+{
+  "title": "Shawn <> Novus AI",
+  "date": "Not specified",
+  "status": "Review Ready",
+  "summary": "Novus AI presented a live meeting recording and transcription bot that captures action items and dates in real-time, with the ability to remove the bot for confidential discussions. The team agreed on a POC go-live date of April 24th and an MVP date of May 25th, with a follow-up meeting scheduled for April 22nd.",
+  "action_items": [
+    {
+      "task": "Schedule follow-up meeting",
+      "assignee": "Shravan Khunti"
+    },
+    {
+      "task": "Take Callum out for dinner",
+      "assignee": "Tashfin Shafique"
+    },
+    {
+      "task": "Remove bot from meeting",
+      "assignee": "Callum Niven"
+    }
+  ],
+  "transcript_text": "[Shravan Khunti]: And as soon as we added , this will change the botting , the meeting and recording . So now whatever we talk , whatever we speak , whatever dates we input , whatever action items we input , the bot is recording it live and as soon as the meeting is meeting ends , or if you want to talk something confidential and don't want the board to listen . You can just kick the bot out and it will uh start producing summary tran script based on where it left a meeting . So that really really likes to say any action item or any dates or anything like that .\n[Tashfin Shafique: Novusai]: Yeah , yeah , so , um , in terms of a POC we want to agree , uh , uh , uh , a final end date to go live date of 24th of April , Friday the 24th , uh , and post that , maybe we can discuss some MVP dates of maybe 25th of May . So in a month's time , um , and that will be um development timelines for , for the project .\n[Shravan Khunti]: OK , yeah , that sounds great . So , we can obviously schedule a follow-up meeting on April 22 at probably 11 a.m. if that works .\n[Tashfin Shafique: Novusai]: Yeah , it would\n[Callum Niven]: be great . That'd\n[Tashfin Shafique: Novusai]: be great . Yup .\n[Shravan Khunti]: Yeah . So it\n[Callum Niven]: needs to take me out for dinner , so that that's another one you could , you could stick in there as an action\n[Tashfin Shafique: Novusai]: . Absolutely .\n[Shravan Khunti]: Yeah\n[Tashfin Shafique: Novusai]: .\n[Shravan Khunti]: So Callum , can you now kick the ball out , if that's OK .\n[Callum Niven]: Uh yeah How do I do that ? People Yeah ,\n[Tashfin Shafique: Novusai]: just go to the the people and drop them off Uh ,\n[Callum Niven]: away from me too .\n",
+  "speakers": [
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "And as soon as we added , this will change the botting , the meeting and recording . So now whatever we talk , whatever we speak , whatever dates we input , whatever action items we input , the bot is recording it live and as soon as the meeting is meeting ends , or if you want to talk something confidential and don't want the board to listen . You can just kick the bot out and it will uh start producing summary tran script based on where it left a meeting . So that really really likes to say any action item or any dates or anything like that .",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "Yeah , yeah , so , um , in terms of a POC we want to agree , uh , uh , uh , a final end date to go live date of 24th of April , Friday the 24th , uh , and post that , maybe we can discuss some MVP dates of maybe 25th of May . So in a month's time , um , and that will be um development timelines for , for the project .",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "OK , yeah , that sounds great . So , we can obviously schedule a follow-up meeting on April 22 at probably 11 a.m. if that works .",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "Yeah , it would",
+      "color": "blue"
+    },
+    {
+      "initials": "CN",
+      "name": "Callum Niven",
+      "time": "00:00",
+      "text": "be great . That'd",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "be great . Yup .",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "Yeah . So it",
+      "color": "blue"
+    },
+    {
+      "initials": "CN",
+      "name": "Callum Niven",
+      "time": "00:00",
+      "text": "needs to take me out for dinner , so that that's another one you could , you could stick in there as an action",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": ". Absolutely .",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "Yeah",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": ".",
+      "color": "blue"
+    },
+    {
+      "initials": "SK",
+      "name": "Shravan Khunti",
+      "time": "00:00",
+      "text": "So Callum , can you now kick the ball out , if that's OK .",
+      "color": "blue"
+    },
+    {
+      "initials": "CN",
+      "name": "Callum Niven",
+      "time": "00:00",
+      "text": "Uh yeah How do I do that ? People Yeah ,",
+      "color": "blue"
+    },
+    {
+      "initials": "T",
+      "name": "Tashfin Shafique: Novusai",
+      "time": "00:00",
+      "text": "just go to the the people and drop them off Uh ,",
+      "color": "blue"
+    },
+    {
+      "initials": "CN",
+      "name": "Callum Niven",
+      "time": "00:00",
+      "text": "away from me too .",
+      "color": "blue"
+    }
+  ]
+}
